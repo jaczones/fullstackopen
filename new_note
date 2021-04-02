@@ -1,0 +1,30 @@
+title full_stack_open_0.4
+
+note left of browser: user enters new note and hits submit button sending user input to server
+browser->server: Form data is sent with HTTP POST to https://fullstack-exampleapp.herokuapp.com/new_note
+note right of server: form tag has action attribute and method that make form submission trigger a POST to /new_note
+note right of server: server creates a new note object, and adds it to an array called notes
+server --> browser : server responds with status code 302 causing redirect
+note left of browser: URL redirect causes browser to do new HTTP GET request to /notes as defined in header's Location
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+note right of server: browser reloads notes page and fetches HTML code defining content and structure of page
+server-->browser: HTML-code
+note left of browser: links in html code cause browser to also fetch main.css
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+server-->browser: main.css
+note left of browser: links in html code also cause browser to fetch main.js
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+server-->browser: main.js
+
+note over browser:
+browser starts executing js-code
+that requests notes as JSON data from server 
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+server-->browser: [{ content: "new note", date: "2021-03-30" }, ...]
+
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note

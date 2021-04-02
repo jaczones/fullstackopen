@@ -1,0 +1,16 @@
+title spa_new_note_0.6
+
+note left of browser: user enters new note and hits submit button sending user input to server
+browser->server: Form data is sent with HTTP POST to https://fullstack-exampleapp.herokuapp.com/new_note_spa
+note right of server: content-type header tells server data is in JSON format
+server->browser: server responds with status code 201 created and sends no further HTTP requests
+note over browser: 
+javascript fetched from server instructs code to fetch
+the form-element from the page and event handler handles
+the form submit event, handler calls method e.preventDefault()
+to prevent default handling which would send data to server and 
+cause new GET request
+event handler creates new note, adds to notes list with notes.push,
+rerenders the note list and sends new note to server
+end note
+browser -> server: form data sent via HTTP POST with content-type as JSON string

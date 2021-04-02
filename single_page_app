@@ -1,0 +1,7 @@
+title single_page_app_0.5
+
+note left of browser: user loads single page app via https://studies.cs.helsinki.fi/exampleapp/spa
+browser -> server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/spa
+server -> browser: server responds with status code 304 and HTML with css and javascript script tag
+note left of browser:browser executes javascript manipulating HTML
+ 
