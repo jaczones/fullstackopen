@@ -1,29 +1,29 @@
 import React from 'react'
 
 const App = () => {
-  const course = 'Half Stack application development'
-  const parts = [
-  {
-    name: 'Fundamentals of React',
-    exercises: 10
-  },
-  {
-    name: 'Using props to pass data',
-    exercises: 7
-  },
-  {
-    name: 'State of a component',
-    exercises: 14
+  const course = {
+    name: 'Half Stack application development',
+    part: [
+      {
+      name: 'Fundamentals of React',
+      exercises: 10
+      },
+      {
+      name: 'Using props to pass data',
+      exercises: 7
+      },
+      {
+      name: 'State of a component',
+      exercises: 14
+      }
+    ]
   }
-]
 
   return (
     <div>
       <Header course={course} />
-      <Content part1={parts[0].name} exercises1={parts[0].exercises} />
-      <Content part2={parts[1].name} exercises2={parts[1].exercises} />
-      <Content part3={parts[2].name} exercises3={parts[2].exercises} />
-      <Total exercises1={parts[0].exercises} exercises2={parts[1].exercises} exercises3={parts[2].exercises} />
+      <Content course={course} />
+      <Total course={course} />
     </div>
   )
 }
@@ -31,7 +31,7 @@ const App = () => {
 const Header = (props) => {
   return (
     <>
-      <h1>{props.course}</h1>
+      <h1>{props.course.name}</h1>
     </>
   )
 }
@@ -46,9 +46,9 @@ const Part = (props) => {
 const Content = (props) => {
   return (
     <div>
-      <Part part={props.part1} exercise={props.exercises1} />
-      <Part part={props.part2} exercise={props.exercises2} />
-      <Part part={props.part3} exercise={props.exercises3} />
+      <Part part={props.course.part[0].name}  exercise={props.course.part[0].exercises} />
+      <Part part={props.course.part[1].name}  exercise={props.course.part[1].exercises} />
+      <Part part={props.course.part[2].name}  exercise={props.course.part[2].exercises} />
     </div>
   )
 }
@@ -56,7 +56,7 @@ const Content = (props) => {
 const Total = (props) => {
   return (
     <div>
-      <p>Number of exercises: {props.exercises1 + props.exercises2 + props.exercises3}</p>
+      <p>Number of exercises: {props.course.part[0].exercises + props.course.part[1].exercises  + props.course.part[2].exercises }</p>
     </div>
   )
 }
