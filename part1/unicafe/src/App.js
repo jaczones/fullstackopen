@@ -7,7 +7,8 @@ const Button = ({ handleClick, text }) => (
 )
 
 const Statistics = (props) => {
-  return (
+  if (props.total !== 0) {
+    return (
     <div>
       <p>Good: {props.good}</p>
       <p>Neutral: {props.neutral}</p>
@@ -16,7 +17,13 @@ const Statistics = (props) => {
       <p>Average: {props.average}</p>
       <p>Positive: {props.positive}%</p>
     </div>
-  )
+    )
+  }
+  return (
+    <div>
+      Press a button to show staistics
+    </div>
+  ) 
 }
 
 const App = () => {
