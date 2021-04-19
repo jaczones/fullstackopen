@@ -6,16 +6,24 @@ const Button = ({ handleClick, text }) => (
   </button>
 )
 
+const Statistic = (props) => {
+  return (
+    <div>
+      {props.text} {props.value}
+    </div>
+  )
+}
+
 const Statistics = (props) => {
   if (props.total !== 0) {
     return (
     <div>
-      <p>Good: {props.good}</p>
-      <p>Neutral: {props.neutral}</p>
-      <p>Bad: {props.bad}</p>
-      <p>All: {props.total}</p>
-      <p>Average: {props.average}</p>
-      <p>Positive: {props.positive}%</p>
+      <Statistic text="Good:" value={props.good}/>
+      <Statistic text="Neutral:" value={props.neutral}/>
+      <Statistic text="Bad:" value={props.bad}/>
+      <Statistic text="Total:" value={props.total}/>
+      <Statistic text="Average:" value={props.average}/>
+      <Statistic text="Positive:" value={props.positive}/>
     </div>
     )
   }
