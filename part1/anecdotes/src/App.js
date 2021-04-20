@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
 
-
 const Button = (props) => (
   <button onClick={props.handleClick}>
     {props.text}
   </button>
 )
-
 
 const App = () => {
   const anecdotes = [
@@ -20,23 +18,52 @@ const App = () => {
   
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0));
-
+  const [total, setTotal] = useState(0)
   const randomClick = () => {
     setSelected([Math.floor(Math.random() * anecdotes.length)])
   }
-
+  
   const voteClick = () => {
     const addVotes = [...votes];
     addVotes[selected] += 1;
-    setVotes(addVotes)
+    setVotes(addVotes);
+    setTotal(total + 1);
   }
+  
+  const findMax = () => {
+    let x = 0
+    let index = 0
+    votes.forEach((value, i) => {
+      if (x < value) {
+        x = value
+        index = i
+      }
+    })
+    if (x > 0){
+    return index;
+    }
+  }
+  
+  const max = findMax()
+  
+  const showMax = () => {
+    if (total > 0) {
+      return "has " + votes[max] + " votes"
+    }
+  }
+
+  const show = showMax()
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
       <p>has {votes[selected]} votes</p>
       <Button handleClick={voteClick} text = "vote" />
       <Button handleClick={randomClick} text="next anecdote" />
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[max]}</p>
+      <p>{show}</p>
     </div>
   )
 }
