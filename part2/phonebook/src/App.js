@@ -4,35 +4,48 @@ import Person from './components/Person'
 const App = (props) => {
   const [ persons, setPersons ] = useState(props.persons) 
   const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber ] = useState('')
+  
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
-      id: persons.length + 1,
       name: newName,
+      number: newNumber,
+      id: persons.length + 1,
     }
-    if (persons.some(person => person.name === newName)){
+    if(persons.some(person => person.name === newName)){
       alert(`${newName} is already in phonebook`)
-    } else {
+    }else {
     setPersons(persons.concat(personObject))
     setNewName('')
+    setNewNumber('')
     }
   }
 
-  const handleSubmission = (event) => {
-    //console.log(event.target.value)
+  const handleNameSubmission = (event) => {
     setNewName(event.target.value)
   }
+
+  const handleNumberSubmission = (event) => {
+    setNewNumber(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
         <div>
           <form onSubmit={addPerson}>
-          Name: <input
+          <p>Name: <input
           value={newName} 
-          onChange ={handleSubmission}
+          onChange ={handleNameSubmission}
+          placeholder="Enter a name..."
+          /></p>
+          Number: <input
+          value={newNumber} 
+          onChange ={handleNumberSubmission}
           placeholder="Enter a name..."
           />
-          <button type="submit">add</button>
+          <p><button type="submit">add</button></p>
           </form>
         </div>
       <h2>Numbers</h2>
