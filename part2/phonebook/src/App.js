@@ -2,10 +2,16 @@ import React, { useState } from 'react'
 import Person from './components/Person'
 
 const App = (props) => {
-  const [ persons, setPersons ] = useState(props.persons) 
+  const [ persons, setPersons ] = useState([
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
+  ]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
-  
+  const [searchTerm, setSearchTerm] = useState('')
+
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
@@ -30,9 +36,19 @@ const App = (props) => {
     setNewNumber(event.target.value)
   }
 
+  const filteredSearch = persons.filter(person =>{
+    return person.name.toLowerCase().includes(searchTerm.toLowerCase())
+  })
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <p>Filtered Search <input
+      value={searchTerm}
+      onChange={e => setSearchTerm(e.target.value)}
+      />
+      </p>
+      <h2>Add New</h2>
         <div>
           <form onSubmit={addPerson}>
           <p>Name: <input
@@ -50,7 +66,7 @@ const App = (props) => {
         </div>
       <h2>Numbers</h2>
       <ul>
-        {persons.map(person => 
+        {filteredSearch.map(person => 
           <Person key={person.id} person={person} />
         )}
       </ul>
