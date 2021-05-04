@@ -1,18 +1,17 @@
 import React, { useState } from 'react'
-import Person from './components/Person'
+import Form from './components/Form'
+import Search from './components/Search'
+import Filter from './components/Filter'
+import { findPerson } from './components/findPerson'
 
 const App = (props) => {
-  const [ persons, setPersons ] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },
-    { name: 'Ada Lovelace', number: '39-44-5323523' },
-    { name: 'Dan Abramov', number: '12-43-234345' },
-    { name: 'Mary Poppendieck', number: '39-23-6423122' }
-  ]) 
+  const [ persons, setPersons ] = useState(props.persons) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-
-  const addPerson = (event) => {
+  const filteredSearch = findPerson(persons, searchTerm)
+  
+  const handleFormSubmission = (event) => {
     event.preventDefault()
     const personObject = {
       name: newName,
@@ -36,40 +35,13 @@ const App = (props) => {
     setNewNumber(event.target.value)
   }
 
-  const filteredSearch = persons.filter(person =>{
-    return person.name.toLowerCase().includes(searchTerm.toLowerCase())
-  })
-
   return (
     <div>
-      <h2>Phonebook</h2>
-      <p>Filtered Search <input
-      value={searchTerm}
-      onChange={e => setSearchTerm(e.target.value)}
-      />
-      </p>
-      <h2>Add New</h2>
-        <div>
-          <form onSubmit={addPerson}>
-          <p>Name: <input
-          value={newName} 
-          onChange ={handleNameSubmission}
-          placeholder="Enter a name..."
-          /></p>
-          Number: <input
-          value={newNumber} 
-          onChange ={handleNumberSubmission}
-          placeholder="Enter a name..."
-          />
-          <p><button type="submit">add</button></p>
-          </form>
-        </div>
-      <h2>Numbers</h2>
-      <ul>
-        {filteredSearch.map(person => 
-          <Person key={person.id} person={person} />
-        )}
-      </ul>
+      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      <div>
+        <Form handleFormSubmission={handleFormSubmission} newName={newName} newNumber={newNumber} handleNameSubmission={handleNameSubmission} handleNumberSubmission={handleNumberSubmission} />
+      </div>
+      <Filter filteredSearch={filteredSearch} />
     </div>
   )
 }
