@@ -10,7 +10,6 @@ const App = () => {
   const [countries, setCountries] = useState([])
   const [searchTerm, setSearchTerm] = useState('')
   const filteredSearch = findCountry(countries, searchTerm)
-
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
@@ -18,7 +17,7 @@ const App = () => {
         setCountries(response.data)
       })
   },[])
-
+  console.log(filteredSearch.length)
 
   return (
     <div>
