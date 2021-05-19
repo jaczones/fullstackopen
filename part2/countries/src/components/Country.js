@@ -7,15 +7,15 @@ const Country = ({ country }) => {
 }
 
 const FullCountry = ({ country }) => {
-    return (
-        <div>
-            <h2>{country.name}</h2>
-            <p>{country.capital}</p>
-            <p>{country.population}</p>
-            <p>{country.languages.name}</p>
-            <p>{country.flag}</p>
-        </div>
-    )
+  return (
+    <div>
+    <h3>{country.name}</h3>
+    <p>Capital: {country.capital}</p>
+    <p>Population:{country.population}</p>
+    <p>{country.languages.name}</p>
+    <p><img src={country.flag} alt="flag" width="30%" height="auto"/></p>
+    </div>
+  )
 }
 
 export {

@@ -17,7 +17,6 @@ const App = () => {
         setCountries(response.data)
       })
   },[])
-  console.log(filteredSearch.length)
 
   return (
     <div>

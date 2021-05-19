@@ -9,12 +9,16 @@ const Filter = ({filteredSearch}) => {
             </>
         )
     }
-    else if (filteredSearch === 1) {
-        <>
+    else if (filteredSearch.length === 1) {
+       return ( 
+       <>
         <ul>
-            <FullCountry />
+            {filteredSearch.map(country =>
+            <FullCountry country={country}/>
+            )}
         </ul>
         </>
+       )
     }else if (filteredSearch.length > 1 || filteredSearch.length < 10){
         return (
             <>
