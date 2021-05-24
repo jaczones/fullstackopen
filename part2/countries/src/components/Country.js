@@ -1,4 +1,5 @@
 import React from 'react'
+import showButton from './ShowButton'
 
 const Country = ({ country }) => {
   return (
@@ -18,7 +19,15 @@ const FullCountry = ({ country }) => {
   )
 }
 
+
+const CountryWithButton = ({ country }) => {
+  return (
+    <li>{country.name} <button type="button"> show </button></li>
+  )
+}
+
 export {
     Country,
     FullCountry,
+    CountryWithButton
 }

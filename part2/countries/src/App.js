@@ -21,7 +21,7 @@ const App = () => {
   return (
     <div>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Filter filteredSearch={filteredSearch} />
+      <Filter filteredSearch={filteredSearch} /> 
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Country, FullCountry} from './Country'
+import { Country, FullCountry, CountryWithButton} from './Country'
+import showButton from './ShowButton'
 
 const Filter = ({filteredSearch}) => {
     if (filteredSearch.length === 250) {
@@ -19,14 +20,16 @@ const Filter = ({filteredSearch}) => {
         </ul>
         </>
        )
-    }else if (filteredSearch.length > 1 || filteredSearch.length < 10){
+    }else if (filteredSearch.length > 1 && filteredSearch.length < 10){
         return (
             <>
-            <ul>
-                {filteredSearch.map(country => 
-                <Country country={country} />
-                )}
-            </ul>
+                <div>
+                    <ul>
+                        {filteredSearch.map(country => 
+                        <CountryWithButton country={country}/>
+                        )}
+                    </ul>
+                </div>
             </>
         )
         
