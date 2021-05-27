@@ -1,45 +1,36 @@
 import React from 'react'
-import { Country, FullCountry, CountryWithButton} from './Country'
-import showButton from './ShowButton'
+import Country from './Country'
 
-const Filter = ({filteredSearch}) => {
-    if (filteredSearch.length === 250) {
+const Filter = ({value, onChange, handleResetClick}) =>
+    <div>
+        <p>
+        Find countries: <input value={value} onChange={onChange}/>
+        <button onClick={handleResetClick} > reset </button>
+        </p>
+    </div>
+
+const FilterLogic = ({countries, setCountries}) => {
+    if (countries.length > 10) {
         return (
-            <>
-            Start typing to search countries...
-            </>
+          <p>
+            Too many matches, keep typing
+          </p>
+        )
+    } else if ((countries.length > 2 && countries.length < 10) || countries.length === 0) {
+        return (
+          <ul>
+            {countries.map((country, i) =>
+              <li key={i}> {country.name} <button onClick={() => setCountries([country])}>show</button></li>
+            )}
+          </ul>
+        )
+    } else {
+        return (
+          <Country country={countries[0]}/>
         )
     }
-    else if (filteredSearch.length === 1) {
-       return ( 
-       <>
-        <ul>
-            {filteredSearch.map(country =>
-            <FullCountry country={country}/>
-            )}
-        </ul>
-        </>
-       )
-    }else if (filteredSearch.length > 1 && filteredSearch.length < 10){
-        return (
-            <>
-                <div>
-                    <ul>
-                        {filteredSearch.map(country => 
-                        <CountryWithButton country={country}/>
-                        )}
-                    </ul>
-                </div>
-            </>
-        )
-        
-    } else {
-    return (
-        <>
-        <p>Too many matches, keep typing...</p>
-        </>
-    )
-}
-}
+  }
 
-export default Filter
+export {
+    Filter,
+    FilterLogic}

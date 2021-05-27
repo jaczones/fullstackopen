@@ -1,30 +1,39 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-import './App.css';
-import Search from './components/Search'
-import Filter from './components/Filter'
-import { findCountry } from './components/findCountry'
-
+import { Filter, FilterLogic } from './components/Filter'
 
 const App = () => {
   const [countries, setCountries] = useState([])
-  const [searchTerm, setSearchTerm] = useState('')
-  const filteredSearch = findCountry(countries, searchTerm)
+  const [allCountries, setAllCountries] = useState([])
+  const [newFilter, setNewFilter] = useState('')
+
   useEffect(() => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
-        setCountries(response.data)
+        setAllCountries(response.data)
       })
-  },[])
+  }, [])
 
+  const handleFilterChange = (event) => {
+    setNewFilter(event.target.value)
+    if (newFilter) {
+      const regex = new RegExp( newFilter, 'i' );
+      const filteredCountries = () => allCountries.filter(country => country.name.match(regex))
+      setCountries(filteredCountries)
+    }
+  }
+
+  const handleResetClick = (event) => {
+    event.preventDefault()
+    setNewFilter('')
+  }
   return (
     <div>
-      <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <Filter filteredSearch={filteredSearch} /> 
+      <Filter value={newFilter} onChange={handleFilterChange} handleResetClick={handleResetClick} />
+      <FilterLogic countries={countries} setCountries={setCountries} />
     </div>
   )
 }
 
-
-export default App;
+export default App
