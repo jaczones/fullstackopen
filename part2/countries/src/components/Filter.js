@@ -16,7 +16,7 @@ const FilterLogic = ({countries, setCountries}) => {
             Too many matches, keep typing
           </p>
         )
-    } else if ((countries.length > 2 && countries.length < 10) || countries.length === 0) {
+    } else if ((countries.length > 2 && countries.length < 10)) {
         return (
           <ul>
             {countries.map((country, i) =>
@@ -24,7 +24,13 @@ const FilterLogic = ({countries, setCountries}) => {
             )}
           </ul>
         )
-    } else {
+    } else if ((countries.length === 0))
+        return(
+            <p>
+                Type the name of a country
+            </p>
+        )
+     else {
         return (
           <Country country={countries[0]}/>
         )

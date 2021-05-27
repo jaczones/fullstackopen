@@ -25,7 +25,7 @@ const App = () => {
   }
 
   const handleResetClick = (event) => {
-    event.preventDefault()
+    setCountries([])
     setNewFilter('')
   }
   return (
