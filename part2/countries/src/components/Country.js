@@ -3,9 +3,8 @@ import axios from 'axios'
 
 const Country = ({country}) => {
 
-  const [weather, setWeather] = useState([])
-  const [temp, setTemp] = useState([])
-  const [wind, setWind] = useState([])
+  const [{weather, temp, wind}, setWeather] = useState({weather: '', temp: '', wind: ''})
+
   useEffect(() => {
     const params = {
       q: country.capital,
@@ -16,9 +15,11 @@ const Country = ({country}) => {
         console.log(response.data)
         const fTemp = parseFloat(response.data.main.temp)
         const finalTemp = Math.round(((fTemp - 273.15)*1.8) + 32)
-        setTemp(finalTemp)
-        setWeather(response.data.weather[0].main)
-        setWind(response.data.wind.speed)
+        setWeather({
+          weather: response.data.weather[0].main,
+          temp: finalTemp,
+          wind: response.data.wind.speed
+        })
         //console.log(`Current temperature in ${apiResponse.location.name} is ${apiResponse.current.temperature}`);
       }).catch(error => {
         console.log(error);
