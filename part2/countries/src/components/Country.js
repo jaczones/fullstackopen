@@ -16,9 +16,9 @@ const Country = ({country}) => {
         const fTemp = parseFloat(response.data.main.temp)
         const finalTemp = Math.round(((fTemp - 273.15)*1.8) + 32)
         setWeather({
-          weather: response.data.weather[0].main,
+          weather: response?.data?.weather[0]?.main,
           temp: finalTemp,
-          wind: response.data.wind.speed
+          wind: response?.data?.wind?.speed
         })
         //console.log(`Current temperature in ${apiResponse.location.name} is ${apiResponse.current.temperature}`);
       }).catch(error => {

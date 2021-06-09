@@ -20,7 +20,7 @@ const App = () => {
   const handleFilterChange = (event) => {
     setNewFilter(event.target.value)
     if (newFilter) {
-      const regex = new RegExp( newFilter, 'i' );
+      const regex = new RegExp( `^${newFilter}`, 'i' );
       const filteredCountries = () => allCountries.filter(country => country.name.match(regex))
       setCountries(filteredCountries)
     }
