@@ -8,6 +8,7 @@ import personService from './services/persons'
 
 const App = (props) => {
   const [ persons, setPersons ] = useState([]) 
+  const [ person, setPerson] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -48,13 +49,23 @@ const App = (props) => {
     setNewNumber(event.target.value)
   }
 
+  const handleRemoveClick = id => {
+    const person = persons.find(p => p.id === id)
+    console.log(person)
+    alert(`Delete ${person.name}?`)
+    personService
+    .remove(id)
+    window.location.reload();
+  }
+
+
   return (
     <div>
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div>
         <Form handleFormSubmission={handleFormSubmission} newName={newName} newNumber={newNumber} handleNameSubmission={handleNameSubmission} handleNumberSubmission={handleNumberSubmission} />
       </div>
-      <Filter filteredSearch={filteredSearch} />
+      <Filter filteredSearch={filteredSearch} handleRemoveClick={handleRemoveClick}/>
     </div>
   )
 }
