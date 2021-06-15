@@ -8,7 +8,6 @@ import personService from './services/persons'
 
 const App = (props) => {
   const [ persons, setPersons ] = useState([]) 
-  const [ person, setPerson] = useState([])
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
@@ -24,13 +23,17 @@ const App = (props) => {
 
   const handleFormSubmission = (event) => {
     event.preventDefault()
+    const person = persons.find((p) => p.name === newName)
     const personObject = {
       name: newName,
       number: newNumber,
       id: persons.length + 1,
     }
-    if(persons.some(person => person.name === newName)){
-      alert(`${newName} is already in phonebook`)
+    if(person){
+      alert(`${newName} is already in phonebook, replace the old number with a new one?`)
+      personService
+      .update(person.id, personObject)
+      window.location.reload();
     }else {
     personService
     .create(personObject)
@@ -57,7 +60,6 @@ const App = (props) => {
     .remove(id)
     window.location.reload();
   }
-
 
   return (
     <div>
