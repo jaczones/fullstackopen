@@ -4,6 +4,7 @@ import Form from './components/Form'
 import Search from './components/Search'
 import Filter from './components/Filter'
 import { findPerson } from './components/findPerson'
+import personService from './services/persons'
 
 const App = (props) => {
   const [ persons, setPersons ] = useState([]) 
@@ -13,10 +14,10 @@ const App = (props) => {
   const filteredSearch = findPerson(persons, searchTerm)
   
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll('http://localhost:3001/persons')
+      .then(initialContacts => {
+        setPersons(initialContacts)
       })
   },[])
 
@@ -30,10 +31,10 @@ const App = (props) => {
     if(persons.some(person => person.name === newName)){
       alert(`${newName} is already in phonebook`)
     }else {
-    axios
-    .post('http://localhost:3001/persons', personObject)
-    .then(response => {
-      setPersons(persons.concat(personObject))
+    personService
+    .create(personObject)
+    .then(returnedContacts => {
+      setPersons(persons.concat(returnedContacts))
       setNewName('')
       setNewNumber('')
     })
