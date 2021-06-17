@@ -5,12 +5,14 @@ import Search from './components/Search'
 import Filter from './components/Filter'
 import { findPerson } from './components/findPerson'
 import personService from './services/persons'
+import Notification from './components/Notification'
 
 const App = (props) => {
   const [ persons, setPersons ] = useState([]) 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
   const filteredSearch = findPerson(persons, searchTerm)
   
   useEffect(() => {
@@ -32,12 +34,24 @@ const App = (props) => {
     if(person){
       alert(`${newName} is already in phonebook, replace the old number with a new one?`)
       personService
-      .update(person.id, personObject)
-      window.location.reload();
+        .update(person.id, personObject)
+      setSuccessMessage(
+        `'${person.name}' was successfully updated`
+      )
+      setTimeout(() => {
+        setSuccessMessage(null)
+        window.location.reload()
+      },5000)
     }else {
-    personService
-    .create(personObject)
+      personService
+      .create(personObject)
     .then(returnedContacts => {
+      setSuccessMessage(
+        `An entry for '${personObject.name}' was successfully created`
+        )
+      setTimeout(() => {
+        setSuccessMessage(null)
+      }, 5000)
       setPersons(persons.concat(returnedContacts))
       setNewName('')
       setNewNumber('')
@@ -63,6 +77,7 @@ const App = (props) => {
 
   return (
     <div>
+      <Notification message={successMessage} />
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div>
         <Form handleFormSubmission={handleFormSubmission} newName={newName} newNumber={newNumber} handleNameSubmission={handleNameSubmission} handleNumberSubmission={handleNumberSubmission} />
