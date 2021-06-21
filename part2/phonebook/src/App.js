@@ -12,14 +12,23 @@ const App = (props) => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [searchTerm, setSearchTerm] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [notificationMessage, setNotificationMessage] = useState(null)
   const filteredSearch = findPerson(persons, searchTerm)
   
   useEffect(() => {
     personService
-      .getAll('http://localhost:3001/persons')
+      .getAll()
       .then(initialContacts => {
         setPersons(initialContacts)
+      })
+      .catch(error => {
+      console.log("Error fetching list")
+      setNotificationMessage({
+        error: `${error} fetching list`
+      });
+      setTimeout(() => {
+      setNotificationMessage(null)
+      }, 5000)
       })
   },[])
 
@@ -35,28 +44,37 @@ const App = (props) => {
       alert(`${newName} is already in phonebook, replace the old number with a new one?`)
       personService
         .update(person.id, personObject)
-      setSuccessMessage(
-        `'${person.name}' was successfully updated`
-      )
+      setNotificationMessage({
+        notification: `'${person.name}' was successfully updated`
+      })
       setTimeout(() => {
-        setSuccessMessage(null)
+        setNotificationMessage(null)
         window.location.reload()
       },5000)
     }else {
       personService
       .create(personObject)
     .then(returnedContacts => {
-      setSuccessMessage(
-        `An entry for '${personObject.name}' was successfully created`
-        )
+      setNotificationMessage({
+       notification: `An entry for '${personObject.name}' was successfully created`
+      })
       setTimeout(() => {
-        setSuccessMessage(null)
+        setNotificationMessage(null)
       }, 5000)
       setPersons(persons.concat(returnedContacts))
       setNewName('')
       setNewNumber('')
     })
-  }}
+    .catch(error => {
+      setNotificationMessage({
+          error: `Error adding ${newName}`
+        });
+      setTimeout(() => {
+      setNotificationMessage(null)
+      }, 5000)
+  })
+}
+  }
 
   const handleNameSubmission = (event) => {
     setNewName(event.target.value)
@@ -72,12 +90,25 @@ const App = (props) => {
     alert(`Delete ${person.name}?`)
     personService
     .remove(id)
-    window.location.reload();
+    .then(response => {
+      console.log(response)
+      window.location.reload();
+      })
+    .catch(error => {
+      setNotificationMessage({
+        error: `${error} caused contact removal to fail, try again later.`
+      })
+    })
   }
 
   return (
     <div>
-      <Notification message={successMessage} />
+      <Notification 
+      message={
+        notificationMessage?.notification || notificationMessage?.error
+        }
+        className={notificationMessage?.notification ? "success" : "error"} 
+        />
       <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div>
         <Form handleFormSubmission={handleFormSubmission} newName={newName} newNumber={newNumber} handleNameSubmission={handleNameSubmission} handleNumberSubmission={handleNumberSubmission} />

@@ -13,7 +13,7 @@ const Form = ({handleFormSubmission, newName, newNumber, handleNameSubmission, h
           Number: <input
           value={newNumber} 
           onChange ={handleNumberSubmission}
-          placeholder="Enter a name..."
+          placeholder="Enter a number..."
           />
           <p><button type="submit">add</button></p>
           </form>
