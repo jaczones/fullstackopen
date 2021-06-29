@@ -36,8 +36,8 @@ const info = {
     response.send(`
     <div>
     <p>${info.message}</p>
-    </div>
-    <span>${info.date}</span>`)
+    <p>${info.date}</p>
+    </div>`)
   })
 
 /*   app.get('/api/notes/:id', (request, response) => {
