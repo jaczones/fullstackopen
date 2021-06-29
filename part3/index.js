@@ -33,7 +33,11 @@ const info = {
   })
 
   app.get('/info', (request, response) => {
-    response.json(info.message + " as of " + info.date) 
+    response.send(`
+    <div>
+    <p>${info.message}</p>
+    </div>
+    <span>${info.date}</span>`)
   })
 
 /*   app.get('/api/notes/:id', (request, response) => {
