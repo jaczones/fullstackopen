@@ -3,6 +3,7 @@ const app = express()
 
 app.use(express.json())
 
+let date = new Date().toLocaleString('en-US')
 let persons =  [
     {
       "name": "Arto Hellas",
@@ -20,10 +21,19 @@ let persons =  [
       "id": 3
     }
   ]
+let count = persons.length
 
+const info = {
+  message: `Phonebook has info for ${count} people.`,
+  date : date
+}
 
   app.get('/api/persons', (request, response) => {
     response.json(persons)
+  })
+
+  app.get('/info', (request, response) => {
+    response.json(info.message + " as of " + info.date) 
   })
 
 /*   app.get('/api/notes/:id', (request, response) => {
