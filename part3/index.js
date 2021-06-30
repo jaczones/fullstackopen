@@ -56,15 +56,35 @@ const info = {
     response.status(204).end()
 })
 
-/*   app.get('/api/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const note = notes.find(note => note.id === id)  
-    if (note) {
-        response.json(note)
-    } else {
-        response.status(404).end()
+
+const generateId = () => {
+  const maxId = persons.length > 0
+    ? Math.max(...persons.map(p => p.id))
+    : 0
+  const personId = Math.ceil(Math.random() + 1 * maxId)
+  return personId
+}
+
+  app.post('/api/persons', (request, response) => {
+    const body = request.body
+
+    if (!body.name) {
+      return response.status(400).json({ 
+        error: 'content missing' 
+      })
     }
-})
+
+    const person = {
+    content: body.name,
+    number: body.number,
+    id: generateId(),
+    }
+
+    persons = persons.concat(person)
+
+    response.json(person)
+  })
+/*   
 
 const generateId = () => {
     const maxId = notes.length > 0
