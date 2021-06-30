@@ -28,7 +28,7 @@ const info = {
   date : date
 }
 
-  app.use(morgan('tiny'))
+  app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
 
   app.get('/api/persons', (request, response) => {
     response.json(persons)
