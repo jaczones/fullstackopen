@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-
+var morgan = require('morgan')
 app.use(express.json())
 
 let date = new Date().toLocaleString('en-US')
@@ -27,6 +27,8 @@ const info = {
   message: `Phonebook has info for ${count} people.`,
   date : date
 }
+
+  app.use(morgan('tiny'))
 
   app.get('/api/persons', (request, response) => {
     response.json(persons)
@@ -67,7 +69,7 @@ const generateId = () => {
 
   app.post('/api/persons', (request, response) => {
     const body = request.body
-    const personMatch = persons.find((p) => p.name === body.content)
+    const personMatch = persons.find((p) => p.name === body.name)
     if (!body.name || !body.number) {
       return response.status(400).json({ 
         error: 'content missing' 
@@ -80,13 +82,14 @@ const generateId = () => {
     }
 
     const person = {
-    content: body.name,
+    name: body.name,
     number: body.number,
     id: generateId(),
     }
     persons = persons.concat(person)
     response.json(person)
   })
+
 
 const PORT = 3001
 app.listen(PORT, () => {
