@@ -28,7 +28,11 @@ const info = {
   date : date
 }
 
-  app.use(morgan(':method :url :status :res[content-length] - :response-time ms'))
+  morgan.token('body', function (req, res) {
+     return JSON.stringify(req.body) 
+    })
+
+  app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
   app.get('/api/persons', (request, response) => {
     response.json(persons)
