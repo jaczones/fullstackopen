@@ -67,7 +67,7 @@ const App = (props) => {
     })
     .catch(error => {
       setNotificationMessage({
-          error: `Error adding ${newName}`
+          error: `${error.response.data.error}`
         });
       setTimeout(() => {
       setNotificationMessage(null)
