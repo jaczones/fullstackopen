@@ -17,7 +17,7 @@ morgan.token('body', function (req, res) {
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.get('/api/persons', (request, response) => {
-    Person.find({}).then(people => {
+    Person.find({}).then((people) => {
     response.json(people)
   })
 })
