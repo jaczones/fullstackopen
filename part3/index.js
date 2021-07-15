@@ -7,17 +7,15 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static('build'))
 const Person = require('./models/person')
-const mongoose = require('mongoose')
 
-const date = new Date().toLocaleString('en-US')
 
-morgan.token('body', function (req, res) {
-    return JSON.stringify(req.body) 
-  })
+morgan.token('body', function (req) {
+  return JSON.stringify(req.body)
+})
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
 app.get('/api/persons', (request, response) => {
-    Person.find({}).then((people) => {
+  Person.find({}).then((people) => {
     response.json(people)
   })
 })
@@ -26,21 +24,21 @@ app.get('/info', async (request, response) => {
   const count = await Person.estimatedDocumentCount({})
   const info = `
   <p>Phonebook has info for ${count} people</p>
-  <p>${new Date()}</p>
+  <p>${new Date().toLocaleString('en-US')}</p>
   `
   response.send(info)
 })
 
 app.get('/api/persons/:id', async (request, response, next) => {
   Person.findById(request.params.id)
-  .then(person => {  
-  if (person) {
-      response.json(person)
-    } else {
-    response.json(404).end()
-  }
-})
- .catch(error => next(error))
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.json(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', async (request, response) => {
@@ -48,44 +46,36 @@ app.delete('/api/persons/:id', async (request, response) => {
     const checkPerson = await Person.findById(request.params.id)
     if (!checkPerson) {
       return response.status.apply(400).json({
-        error: "There is no person correlated with this ID"
+        error: 'There is no person correlated with this ID'
       })
     }
     await Person.findByIdAndRemove(request.params.id)
-    response.json({ success: true})
+    response.json({ success: true })
   } catch (error) {
     return (error)
   }
 })
 
 
-const generateId = () => {
-  const maxId = persons.length > 0
-    ? Math.max(...persons.map(p => p.id))
-    : 0
-  const personId = Math.ceil(Math.random() + 1 * maxId)
-  return personId
-}
-
 app.post('/api/persons', async (request, response, next) => {
   const { name,number } = request.body
   if (!name || !number) {
-    return response.status(400).json({ 
-      error: 'Name or Number missing' 
+    return response.status(400).json({
+      error: 'Name or Number missing'
     })
-   }
+  }
 
   const person = new Person({
     name: name,
-    number: number 
+    number: number
   })
   person
-  .save()
-  .then(savedPerson => savedPerson.toJSON())
-  .then(savedAndFormattedPerson => {
-    response.json(savedAndFormattedPerson)
-  })
-  .catch(error => next(error))
+    .save()
+    .then(savedPerson => savedPerson.toJSON())
+    .then(savedAndFormattedPerson => {
+      response.json(savedAndFormattedPerson)
+    })
+    .catch(error => next(error))
 })
 
 
@@ -117,7 +107,7 @@ const errorHandler = (error, request, response, next) => {
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
   } else if (error.name === 'ValidationError') {
-    return response.status(400).json({error:error.message})
+    return response.status(400).json( { error:error.message } )
   }
   next(error)
 }
@@ -127,5 +117,5 @@ app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
+  console.log(`Server running on port ${PORT}`)
 })
