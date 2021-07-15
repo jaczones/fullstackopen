@@ -31,16 +31,16 @@ app.get('/info', async (request, response) => {
   response.send(info)
 })
 
-app.get('/api/persons/:id', async (request, response) => {
-  try {
-    const person = await Person.findById(request.params.id)
-    if (!person) {
-      return response.status(404).end()
-    }
-    response.json(person)
-  } catch (error) {
-    return(error)
+app.get('/api/persons/:id', async (request, response, next) => {
+  Person.findById(request.params.id)
+  .then(person => {  
+  if (person) {
+      response.json(person)
+    } else {
+    response.json(404).end()
   }
+})
+ .catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', async (request, response) => {
@@ -88,6 +88,7 @@ try {
 }
 })
 
+
 app.put('/api/persons/:id', async (request, response) => {
   try {
     const { name, number } = request.body
@@ -103,6 +104,24 @@ app.put('/api/persons/:id', async (request, response) => {
     return(error)
   }
 })
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint)
+
+const errorHandler = (error, request, response, next) => {
+  console.error(error.message)
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  }
+  next(error)
+}
+
+// this has to be the last loaded middleware.
+app.use(errorHandler)
 
 const PORT = process.env.PORT
 app.listen(PORT, () => {
