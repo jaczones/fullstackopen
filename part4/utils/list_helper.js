@@ -27,7 +27,7 @@ const faveBlog = (blogs) => {
 
 const mostBlogs = (blogs) => {
     if (!blogs) return null
-    if (blogs === 1) return { author: blogs[0].author, blogs: blogs[0].likes }
+    if (blogs === 1 ) return { author: blogs[0].author, blogs: blogs[0].likes }
   
     return _.chain(blogs)
         .countBy('author')
@@ -38,7 +38,7 @@ const mostBlogs = (blogs) => {
   
 const mostLikes = (blogs) => {
     if (!blogs) return null
-    if (blogs) return { author: blogs[0].author, likes: blogs[0].likes }
+    if (blogs === 1) return { author: blogs[0].author, likes: blogs[0].likes }
   
     return _.chain(blogs)
         .groupBy('author')
@@ -53,5 +53,6 @@ module.exports = {
     dummy,
     totalLikes,
     faveBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
