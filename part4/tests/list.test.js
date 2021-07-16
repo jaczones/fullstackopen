@@ -41,7 +41,7 @@ const blogs = [
         title: 'First class tests',
         author: 'Robert C. Martin',
         url: 'http://blog.cleancoder.com/uncle-bob/2017/05/05/TestDefinitions.htmll',
-        likes: 10,
+        likes: 12,
         __v: 0
     },
     {
@@ -77,5 +77,8 @@ describe('total likes', () => {
 describe('favorite blog', () => {
     test('favorite with 1 blog', () => {
         expect(listHelper.faveBlog(listWithOneBlog)).toEqual(listWithOneBlog[0])
+    })
+    test('favorite with multiple blogs', () => {
+        expect(listHelper.faveBlog(blogs)).toEqual(blogs[2])
     })
 })
