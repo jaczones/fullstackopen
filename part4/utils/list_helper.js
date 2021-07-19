@@ -21,7 +21,6 @@ const faveBlog = (blogs) => {
         : blogs.length === 1
             ? blogs[0]
             : null
-    console.log(fave)
     return fave        
 }
 
