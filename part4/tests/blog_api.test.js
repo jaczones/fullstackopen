@@ -15,106 +15,107 @@ beforeEach(async () => {
     await Promise.all(promiseArray)
 })
 
-test('blogs are returned as json', async () => {
-    await api
-        .get('/api/blog')
-        .expect(200)
-        .expect('Content-Type', /application\/json/)
-})
+describe('returning saved notes tests', () => {
+    test('blogs are returned as json', async () => {
+        await api
+            .get('/api/blog')
+            .expect(200)
+            .expect('Content-Type', /application\/json/)
+    })
 
+    test('all blogs are returned', async () => {
+        const response = await api.get('/api/blog')
+        expect(response.body).toHaveLength(helper.initialBlogs.length)
+    })
 
-test('all blogs are returned', async () => {
-    const response = await api.get('/api/blog')
-    expect(response.body).toHaveLength(helper.initialBlogs.length)
-})
-
-test('id is called id', async () => {
-    const response = await api.get('/api/blog')
-    expect(response.body[0].id).toBeDefined()
-})
-  
-test('a specific note is within the returned blogs', async () => {
-    const response = await api.get('/api/blog')
-  
-    const contents = response.body.map(r => r.title)
-    expect(contents).toContain(
-        'Test'
-    )
-})
-
-test('a valid blog can be added', async () => {
-    const newBlog = {
-        title: 'async/await simplifies making async calls',
-        author: 'itz',
-        url: 'www.itz.com',
-        likes: 0
-    }
-  
-    await api
-        .post('/api/blog')
-        .send(newBlog)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+    test('id is called id', async () => {
+        const response = await api.get('/api/blog')
+        expect(response.body[0].id).toBeDefined()
+    })
     
-    const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
-  
-    const contents = blogsAtEnd.map(r => r.title)
-    expect(contents).toContain(
-        'async/await simplifies making async calls'
-    )
+    test('a specific note is within the returned blogs', async () => {
+        const response = await api.get('/api/blog')
+        const contents = response.body.map(r => r.title)
+        expect(contents).toContain(
+            'Test'
+        )
+    })
 })
 
-test('blog added with no likes defaults to zero', async () => {
-    const newBlog = {
-        title: 'nobody likes this blog',
-        author: 'zac',
-        url: 'www.itz.com',
-    }
-  
-    await api
-        .post('/api/blog')
-        .send(newBlog)
-        .expect(201)
-        .expect('Content-Type', /application\/json/)
+describe('posting notes to DB tests', () => {
+    test('a valid blog can be added', async () => {
+        const newBlog = {
+            title: 'async/await simplifies making async calls',
+            author: 'itz',
+            url: 'www.itz.com',
+            likes: 0
+        }
     
-    const blogsAtEnd = await helper.blogsInDb()
-    const likes = blogsAtEnd.map((blog) => blog.likes)
-    expect(likes).toContain(0)
-})
-
-test('blog with no title returns 400', async () => {
-    const newBlog = {
-        author: 'zac',
-        url: 'www.itz.com',
-    }
-  
-    await api
-        .post('/api/blog')
-        .send(newBlog)
-        .expect(400)
-        .expect('Content-Type', /application\/json/)
+        await api
+            .post('/api/blog')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
     
-    const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
-})
+        const contents = blogsAtEnd.map(r => r.title)
+        expect(contents).toContain(
+            'async/await simplifies making async calls'
+        )
+    })
 
-test('blog with no author returns 400', async () => {
-    const newBlog = {
-        title: 'zac',
-        url: 'www.itz.com',
-    }
-  
-    await api
-        .post('/api/blog')
-        .send(newBlog)
-        .expect(400)
-        .expect('Content-Type', /application\/json/)
+    test('blog added with no likes defaults to zero', async () => {
+        const newBlog = {
+            title: 'nobody likes this blog',
+            author: 'zac',
+            url: 'www.itz.com',
+        }
     
-    const blogsAtEnd = await helper.blogsInDb()
-    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
-})
+        await api
+            .post('/api/blog')
+            .send(newBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+        
+        const blogsAtEnd = await helper.blogsInDb()
+        const likes = blogsAtEnd.map((blog) => blog.likes)
+        expect(likes).toContain(0)
+    })
 
+    test('blog with no title returns 400', async () => {
+        const newBlog = {
+            author: 'zac',
+            url: 'www.itz.com',
+        }
+    
+        await api
+            .post('/api/blog')
+            .send(newBlog)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+
+    test('blog with no author returns 400', async () => {
+        const newBlog = {
+            title: 'zac',
+            url: 'www.itz.com',
+        }
+    
+        await api
+            .post('/api/blog')
+            .send(newBlog)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+        
+        const blogsAtEnd = await helper.blogsInDb()
+        expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+    })
+})
 
 afterAll(() => {
     mongoose.connection.close()
