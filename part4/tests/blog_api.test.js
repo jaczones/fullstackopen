@@ -169,6 +169,44 @@ describe('when there is initially one user in db', () => {
         const usersAtEnd = await helper.usersInDb()
         expect(usersAtEnd).toHaveLength(usersAtStart.length)
     })
+
+    test('username less than 2 characters fails', async () => {
+        const usersAtStart = await helper.usersInDb()
+    
+        const newUser = {
+            username: 'ml',
+            name: 'Matti Luukkainen',
+            password: 'salainen',
+        }
+  
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+    
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
+
+    test('password less than 2 characters fails', async () => {
+        const usersAtStart = await helper.usersInDb()
+    
+        const newUser = {
+            username: 'mladsad',
+            name: 'Matti Luukkainen',
+            password: 'sa',
+        }
+  
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+    
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+    })
 })
 
 afterAll(() => {
