@@ -1,1 +1,9 @@
-DELETE http://localhost:3001/api/blog/60f704f67974b0ab2d6ca22c
+PUT http://localhost:3001/api/blog/60f704f67974b0ab2d6ca22b
+Content-Type: application/json
+
+{
+    "title": "Test 2",
+    "author": "Zachariah",
+    "url": "www.testing.com",
+    "likes": 7
+}
