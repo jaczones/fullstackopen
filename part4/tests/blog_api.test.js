@@ -83,6 +83,38 @@ test('blog added with no likes defaults to zero', async () => {
     expect(likes).toContain(0)
 })
 
+test('blog with no title returns 400', async () => {
+    const newBlog = {
+        author: 'zac',
+        url: 'www.itz.com',
+    }
+  
+    await api
+        .post('/api/blog')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
+test('blog with no author returns 400', async () => {
+    const newBlog = {
+        title: 'zac',
+        url: 'www.itz.com',
+    }
+  
+    await api
+        .post('/api/blog')
+        .send(newBlog)
+        .expect(400)
+        .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length)
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
