@@ -65,6 +65,24 @@ test('a valid blog can be added', async () => {
     )
 })
 
+test('blog added with no likes defaults to zero', async () => {
+    const newBlog = {
+        title: 'nobody likes this blog',
+        author: 'zac',
+        url: 'www.itz.com',
+    }
+  
+    await api
+        .post('/api/blog')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+    
+    const blogsAtEnd = await helper.blogsInDb()
+    const likes = blogsAtEnd.map((blog) => blog.likes)
+    expect(likes).toContain(0)
+})
+
 
 afterAll(() => {
     mongoose.connection.close()
