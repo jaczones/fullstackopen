@@ -24,7 +24,7 @@ blogRouter.post('/', async (request, response) => {
     if (!token || !decodedToken.id) {
         return response.status(401).json({ error: 'token missing or invalid' })
     }
-    const user = await User.findById(decodedToken.id)
+    const user = request.user
     const title = request.body.title
     const author = request.body.author
     if (!title || !author) {
@@ -46,17 +46,21 @@ blogRouter.post('/', async (request, response) => {
 })
 
 blogRouter.delete('/:id', async (request, response) => {
-    try {
-        const checkBlog = await Blog.findById(request.params.id)
-        if (!checkBlog) {
-            return response.status.blogRouter(400).json({
-                error: 'There is no blog correlated with this ID'
-            })
-        }
-        await Blog.findByIdAndRemove(request.params.id)
-        response.json({ success: true })
-    } catch (error) {
-        return (error)
+    const token = request.token
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+    if (!token || !decodedToken.id) {
+        return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const user = request.user
+    const blogId = request.params.id
+    const blog = await Blog.findById(blogId)
+
+    if (blog.user.toString() === decodedToken.id.toString()) {
+        await Blog.deleteOne({ _id: blogId })
+        response.sendStatus(204)
+    } else {
+        response.status(403).json({ error: 'forbidden: invalid user' })
     }
 })
 
