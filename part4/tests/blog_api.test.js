@@ -6,6 +6,18 @@ const api = supertest(app)
 const bcrypt = require('bcrypt')
 const User = require('../models/user')
 const Blog = require('../models/blog')
+
+beforeAll(async () => {
+    await User.deleteMany({})
+  
+    const testUser = {
+        username: 'test',
+        name: 'test',
+        password: 'test',
+    }
+    await api.post('/api/users').send(testUser)
+})
+
 beforeEach(async () => {
     await Blog.deleteMany({})
 
@@ -50,20 +62,24 @@ describe('posting notes to DB tests', () => {
             url: 'www.itz.com',
             likes: 0
         }
-    
+        const user = {
+            username: 'test',
+            password: 'test',
+        }
+        const login = await api.post('/api/login').send(user)
+        const { token } = login.body
         await api
             .post('/api/blog')
             .send(newBlog)
-            .expect(201)
+            .set('Authorization', `bearer ${token}`)
+            .expect(200)
             .expect('Content-Type', /application\/json/)
         
         const blogsAtEnd = await helper.blogsInDb()
         expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length + 1)
     
         const contents = blogsAtEnd.map(r => r.title)
-        expect(contents).toContain(
-            'async/await simplifies making async calls'
-        )
+        expect(contents).toContain(newBlog.title)
     })
 
     test('blog added with no likes defaults to zero', async () => {
@@ -72,11 +88,17 @@ describe('posting notes to DB tests', () => {
             author: 'zac',
             url: 'www.itz.com',
         }
-    
+        const user = {
+            username: 'test',
+            password: 'test',
+        }
+        const login = await api.post('/api/login').send(user)
+        const { token } = login.body
         await api
             .post('/api/blog')
             .send(newBlog)
-            .expect(201)
+            .set('Authorization', `bearer ${token}`)
+            .expect(200)
             .expect('Content-Type', /application\/json/)
         
         const blogsAtEnd = await helper.blogsInDb()
@@ -89,10 +111,16 @@ describe('posting notes to DB tests', () => {
             author: 'zac',
             url: 'www.itz.com',
         }
-    
+        const user = {
+            username: 'test',
+            password: 'test',
+        }
+        const login = await api.post('/api/login').send(user)
+        const { token } = login.body
         await api
             .post('/api/blog')
             .send(newBlog)
+            .set('Authorization', `bearer ${token}`)
             .expect(400)
             .expect('Content-Type', /application\/json/)
         
@@ -105,10 +133,16 @@ describe('posting notes to DB tests', () => {
             title: 'zac',
             url: 'www.itz.com',
         }
-    
+        const user = {
+            username: 'test',
+            password: 'test',
+        }
+        const login = await api.post('/api/login').send(user)
+        const { token } = login.body
         await api
             .post('/api/blog')
             .send(newBlog)
+            .set('Authorization', `bearer ${token}`)
             .expect(400)
             .expect('Content-Type', /application\/json/)
         
