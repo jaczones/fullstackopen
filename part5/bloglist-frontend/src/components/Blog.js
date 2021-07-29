@@ -31,13 +31,19 @@ const Blog = (props) => {
   const label = showAll ? 'hide' : 'view'
 
   return (
-    <div style={blogStyle}>
-      <p><strong>Title:</strong> {blog.title} <button onClick={toggleVis}>{label}</button> <br/></p>
-      <div style={showWhenVisible}>
-        <p>Author: {blog.author} <br/>  URL: {blog.url} <br/> Likes: {blog.likes}</p>
-        <p>{ blogObject.likes } <button id='likes-button' onClick={addLikes}>like</button></p>
-        <button id='remove' onClick={deleteBlog}>delete</button>
-      </div>
+    <div id="blog" style={blogStyle}>
+      <p><strong>Title:</strong> {blog.title} <br/> Author: {blog.author}{' '}
+        <button
+          onClick={toggleVis}>{label}</button> <br/></p>
+      {showAll ? (
+        <div style={showWhenVisible}>
+          <p>URL: {blog.url} <br/> Likes: {blog.likes}</p>
+          <p>{ blogObject.likes } <button id='likes-button' onClick={addLikes}>like</button></p>
+          <button id='remove' onClick={deleteBlog}>delete</button>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   )
 }

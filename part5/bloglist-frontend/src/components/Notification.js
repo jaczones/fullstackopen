@@ -6,7 +6,7 @@ const Notification = ({ errorMessage, successMessage }) => {
     return null
   } else if (successMessage){
     return (
-      <div className="blog">
+      <div className="success">
         {successMessage}
       </div>
     )
