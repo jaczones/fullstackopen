@@ -31,7 +31,7 @@ const Blog = (props) => {
   const label = showAll ? 'hide' : 'view'
 
   return (
-    <div id="blog" style={blogStyle}>
+    <div id="blog" style={blogStyle} className='blog'>
       <p><strong>Title:</strong> {blog.title} <br/> Author: {blog.author}{' '}
         <button id='view-button'
           onClick={toggleVis}>{label}</button> <br/></p>
