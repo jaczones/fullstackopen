@@ -147,7 +147,7 @@ const App = () => {
       {user === null ?
         loginForm() :
         <div>
-          {user.name} logged-in <form onSubmit={handleLogout}><button type='submit'>logout</button></form>
+          {user.name} logged-in <form onSubmit={handleLogout}><button id='logout-button' type='submit'>logout</button></form>
           <br></br>
           <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
             <BlogForm
