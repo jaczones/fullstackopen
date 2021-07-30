@@ -33,7 +33,7 @@ const Blog = (props) => {
   return (
     <div id="blog" style={blogStyle}>
       <p><strong>Title:</strong> {blog.title} <br/> Author: {blog.author}{' '}
-        <button
+        <button id='view-button'
           onClick={toggleVis}>{label}</button> <br/></p>
       {showAll ? (
         <div style={showWhenVisible}>
