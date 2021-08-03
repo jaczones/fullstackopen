@@ -19,7 +19,7 @@ const AnecdoteRender = ({ anecdote }) => {
 
 const AnecdoteSort = () => {
   const anecdotes = useSelector(state => state)
-  const sortByVotes = (b1,b2) => b2.votes - b1.votes
+  const sortByVotes = (a1,a2) => a2.votes - a1.votes
   return(
     anecdotes.sort(sortByVotes).map(anecdote => <AnecdoteRender anecdote={anecdote} />)
   )
