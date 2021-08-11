@@ -11,8 +11,7 @@ const NewAnecdote = () => {
         event.preventDefault()
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
-        const newAnecdote = await anecdoteService.createNew(content)
-        dispatch(createAnecdote(newAnecdote))
+        dispatch(createAnecdote(content))
         dispatch(addNotification(`Anecdote '${content}' was successfully added to the store`))
         setTimeout(() => {
           dispatch(addNotification(null))
