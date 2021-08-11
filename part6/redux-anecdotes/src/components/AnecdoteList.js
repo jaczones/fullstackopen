@@ -7,7 +7,7 @@ const AnecdoteRender = ({ anecdote }) => {
     const dispatch = useDispatch()
 
     const votedFor = () => {
-      dispatch(voteFor(anecdote.id))
+      dispatch(voteFor(anecdote))
       dispatch(addNotification(`You voted for ${anecdote.content}`))
       setTimeout(() => {
         dispatch(addNotification(null))
