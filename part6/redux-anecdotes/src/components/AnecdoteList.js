@@ -31,6 +31,7 @@ const AnecdoteSort = () => {
     if ( filter === null ) {
       return anecdotes
     }
+    console.log(anecdotes)
     const regex = new RegExp( filter, 'i' )
     return anecdotes.filter(anecdote => anecdote.content.match(regex))
   })
