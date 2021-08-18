@@ -1,12 +1,11 @@
 import React from 'react'
 import { filterChange } from '../reducers/filterReducer'
-import { useDispatch } from 'react-redux'
+import { connect } from 'react-redux'
 
-const VisibilityFilter = () => {
-  const dispatch = useDispatch()
+const VisibilityFilter = (props) => {
 
   const handleChange = (event) => {
-    dispatch(filterChange(event.target.value))
+    props.filterChange(event.target.value)
 }
 const style = {
     marginBottom: 10
@@ -19,4 +18,9 @@ const style = {
   )
 }
 
-export default VisibilityFilter
+const mapDispatchToProps = {
+  filterChange
+}
+
+const ConnectedFilter = connect(null, mapDispatchToProps)(VisibilityFilter)
+export default ConnectedFilter
