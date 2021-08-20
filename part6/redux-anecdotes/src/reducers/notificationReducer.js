@@ -10,13 +10,14 @@ const notificationsReducer = (state = null, action) => {
 }
 
 export const setNotification = (notification, timeout) => {
-    return async dispatch => {
+  window.clearTimeout(window.timeout);  
+  return async dispatch => {
       dispatch({
         type: 'NEW_NOTIFICATION',
         notification,
       })
   
-      setTimeout(() => {
+      window.timeout = setTimeout(() => {
         dispatch({
           type: 'HIDE_NOTIFICATION',
           notification: null

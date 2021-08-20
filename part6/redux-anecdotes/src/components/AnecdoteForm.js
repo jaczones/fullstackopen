@@ -10,7 +10,7 @@ const NewAnecdote = (props) => {
         const content = event.target.anecdote.value
         event.target.anecdote.value = ''
         props.createAnecdote(content)
-        props.setNotification(`Anecdote '${content}' was successfully added to the store`, 10)
+        props.setNotification(`Anecdote '${content}' was successfully added to the store`, 5)
       }
 
       return (
