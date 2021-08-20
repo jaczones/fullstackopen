@@ -125,12 +125,12 @@ const App = () => {
     <div>
       <div>
         <Link style={padding} to="/">anecdotes</Link>
-        <Link style={padding} to="/addnew">create new</Link>
+        <Link style={padding} to="/create">create new</Link>
         <Link style={padding} to="/about">about</Link>
       </div>
       <h1>Software anecdotes</h1>
       <Switch>
-        <Route path='/addnew'>
+        <Route path='/create'>
           <CreateNew />
         </Route>
         <Route path ='/about'>
