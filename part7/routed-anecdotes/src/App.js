@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
   Switch, Route, Link, 
-  useParams, useRouteMatch
+  useParams, useRouteMatch, useHistory
 } from "react-router-dom"
 
 const Anecdote = ({ anecdotes }) => {
@@ -57,7 +57,7 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
-
+  const history = useHistory()
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -67,6 +67,9 @@ const CreateNew = (props) => {
       info,
       votes: 0
     })
+    const message = `a new anecdote ${content} created`
+    props.showNotification(message)
+    history.push('/')
   }
 
   return (
@@ -92,6 +95,19 @@ const CreateNew = (props) => {
 
 }
 
+const Notification = ({notification}) => {
+  const style = {
+    border: 'solid',
+    padding: '10px',
+    borderWidth: 1
+  }
+  return (
+    <div style={style}>
+      {notification}
+    </div>
+  )
+}
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -111,6 +127,13 @@ const App = () => {
   ])
 
   const [notification, setNotification] = useState('')
+
+  const showNotification = (message) => {
+    setNotification(message)
+    setTimeout(() => {
+      setNotification(null)
+    }, 10000)
+  }
 
   const padding = {
     paddingRight: 5
@@ -148,12 +171,15 @@ const App = () => {
         <Link style={padding} to="/about">about</Link>
       </div>
       <h1>Software anecdotes</h1>
+      {notification && 
+        <Notification notification={notification} />
+      }
       <Switch>
         <Route path="/anecdotes/:id">
           <Anecdote anecdotes={anecdotes} />
         </Route>
         <Route path='/create'>
-          <CreateNew />
+          <CreateNew addNew={addNew} showNotification={showNotification}/>
         </Route>
         <Route path ='/about'>
           <About />
