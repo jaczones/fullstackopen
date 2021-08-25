@@ -9,6 +9,7 @@ import {
     Redirect,
     useRouteMatch,
     useHistory,
+    useParams
   } from "react-router-dom"
 
 ReactDOM.render(

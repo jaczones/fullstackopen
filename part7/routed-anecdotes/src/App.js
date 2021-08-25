@@ -1,8 +1,21 @@
 import React, { useState } from 'react'
 import {
   BrowserRouter as Router,
-  Switch, Route, Link
+  Switch, Route, Link, 
+  useParams, useRouteMatch
 } from "react-router-dom"
+
+const Anecdote = ({ anecdotes }) => {
+  const id = useParams().id
+  const anecdote = anecdotes.find(anecdote => anecdote.id === id)
+  return (
+    <div>
+      <h4>{anecdote.content} by {anecdote.author}</h4>
+      <p>has {anecdote.votes} votes</p>
+      <p>for more info see <a href={anecdote.info}>{anecdote.info}</a></p>
+    </div>
+  )
+}
 
 const AnecdoteList = ({ anecdotes }) => (
   <div>
@@ -16,6 +29,7 @@ const AnecdoteList = ({ anecdotes }) => (
     </ul>
   </div>
 )
+
 
 const About = () => (
   <div>
@@ -120,6 +134,11 @@ const App = () => {
 
     setAnecdotes(anecdotes.map(a => a.id === id ? voted : a))
   }
+  
+  const match = useRouteMatch('/anecdotes/:id')
+  const anecdote = match 
+    ? anecdotes.find(anecdote => anecdote.id === Number(match.params.id))
+    : null
 
   return (
     <div>
@@ -130,6 +149,9 @@ const App = () => {
       </div>
       <h1>Software anecdotes</h1>
       <Switch>
+        <Route path="/anecdotes/:id">
+          <Anecdote anecdotes={anecdotes} />
+        </Route>
         <Route path='/create'>
           <CreateNew />
         </Route>
