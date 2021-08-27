@@ -1,12 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { login } from '../reducers/userReducer'
+import { login } from '../reducers/loginReducer'
 import { initializeBlogs } from '../reducers/blogReducer'
+import { useHistory } from 'react-router-dom'
 
 
 const LoginForm = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -16,6 +18,7 @@ const LoginForm = () => {
     event.target.password.value = ''
     dispatch(login(username, password))
     dispatch(initializeBlogs())
+    history.push('/blogs')
   }
 
   return (
@@ -27,7 +30,7 @@ const LoginForm = () => {
           username
           <input
             id='username'
-            type='test'
+            type='text'
             name='username'
           />
         </div>
