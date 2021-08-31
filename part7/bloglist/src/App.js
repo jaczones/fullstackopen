@@ -8,7 +8,7 @@ import Blog from './components/Blog'
 import Menu from './components/Menu'
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeUser } from './reducers/loginReducer'
-import { initializeBlogs, like } from './reducers/blogReducer'
+import { initializeBlogs, like, comment } from './reducers/blogReducer'
 import { initializeAllUsers } from './reducers/userReducer'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import UserList from './components/UserList'
@@ -35,6 +35,13 @@ const App = () => {
   const foundBlog = blogMatch
     ? blogs.find((blog) => blog.id === blogMatch.params.id)
     : null
+
+    const handleComment = (event) => {
+      event.preventDefault()
+      const newComment = event.target.comment.value
+      event.target.comment.value = ''
+      dispatch(comment(foundBlog, newComment))
+    }
 
   return (
     <Switch>
@@ -85,6 +92,14 @@ const App = () => {
                       </button>
                     </p>
                     <p>added by {foundBlog.author}</p>
+                      <form onSubmit={handleComment}>
+                        <div>
+                          <input id="comment" type="text" name="comment" />
+                            <button id="comment-button" type="submit">
+                            add comment
+                          </button>
+                        </div>
+                      </form>
                   </div>
                 )}
             </div>
