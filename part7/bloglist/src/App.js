@@ -5,16 +5,16 @@ import Togglable from './components/Togglable'
 import Notification from './components/Notification'
 import BlogList from './components/BlogList'
 import Blog from './components/Blog'
+import Menu from './components/Menu'
 import { useDispatch, useSelector } from 'react-redux'
-import { initializeUser, logout } from './reducers/loginReducer'
+import { initializeUser } from './reducers/loginReducer'
 import { initializeBlogs, like } from './reducers/blogReducer'
 import { initializeAllUsers } from './reducers/userReducer'
-import { Switch, Route, useHistory, useRouteMatch } from 'react-router-dom'
+import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import UserList from './components/UserList'
 
 const App = () => {
   const dispatch = useDispatch()
-  const history = useHistory()
   const user = useSelector((state) => state.user)
   const users = useSelector((state) => state.users)
   const blogs = useSelector((state) => state.blog)
@@ -25,13 +25,6 @@ const App = () => {
     dispatch(initializeBlogs())
     dispatch(initializeAllUsers())
   }, [dispatch])
-
-
-  const handleLogout = async (event) => {
-    event.preventDefault()
-    dispatch(logout())
-    history.push('/')
-  }
 
   const userMatch = useRouteMatch('/users/:id')
   const foundUser = userMatch
@@ -53,6 +46,7 @@ const App = () => {
             </div>
           ) : (
             <div>
+              <Menu />
               <h2>Blogs</h2>
               <Notification />
                 <h2>{user.name}</h2>
@@ -75,6 +69,7 @@ const App = () => {
             </div>
           ) : (
             <div>
+              <Menu />
               <h2>Blogs</h2>
               <Notification />
                 {!foundBlog ? (
@@ -103,16 +98,13 @@ const App = () => {
             </div>
           ) : (
             <div>
+              <Menu />
               <h2>Blogs</h2>
               <Notification />
-                <p>
-                  {user.name} logged in
-                  <button onClick={handleLogout} type="submit">
-                    logout
-                  </button>
-                </p>
                 <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
+                  <div>
                   <BlogForm />
+                  </div>
                 </Togglable>
                 <BlogList />
                 <h2>Users</h2>
@@ -128,14 +120,9 @@ const App = () => {
           </div>
         ) : (
           <div>
+            <Menu />
             <h2>Blogs</h2>
             <Notification />
-              <p>
-                {user.name} logged in
-                <button onClick={handleLogout} type="submit">
-                  logout
-                </button>
-              </p>
               <h2>Users</h2>
               <UserList />
           </div>
