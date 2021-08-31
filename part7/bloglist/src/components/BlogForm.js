@@ -3,6 +3,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Button } from 'react-bootstrap'
 
 const BlogForm = () => {
   const dispatch = useDispatch()
@@ -37,7 +38,7 @@ return (
         Url: <input id='url' name="url" />
       </div>
       <div>
-        <button type="submit">add</button>
+        <Button type="submit">add</Button>
       </div>
     </form>
   )

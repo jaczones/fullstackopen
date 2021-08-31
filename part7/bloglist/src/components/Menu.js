@@ -1,25 +1,14 @@
 import React from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../reducers/loginReducer'
+import { Button, Navbar, Nav, Container } from 'react-bootstrap'
 
 const Menu = () => {
   const dispatch = useDispatch()
   const history = useHistory()
   const user = useSelector((state) => state.user)
 
-  const padding = {
-    paddingRight: 5
-  }
-
-  const style = {
-    background: 'lightgrey',
-    font_size: 20,
-    border_style: 'solid',
-    border_radius: 5,
-    padding: 10,
-    margin_bottom: 10
-  }
 
   const handleLogout = async (event) => {
     event.preventDefault()
@@ -28,20 +17,21 @@ const Menu = () => {
   }
 
   return (
-    <div style={style}>
-        {user.name} is currently logged in {' '}
-      <button onClick={handleLogout} type="submit">
+    <Navbar sticky='top' bg="light" expand="lg">
+  <Container>
+  <Nav.Link href="/blogs">Blogs</Nav.Link>
+  <Nav.Link href="/users">Users</Nav.Link>
+    <Navbar.Toggle />
+    <Navbar.Collapse className="justify-content-end">
+      <Navbar.Text>
+        Signed in as: {user.name}
+        <Button variant="outline-warning" onClick={handleLogout} type="submit">
         logout
-      </button>
-      <div>
-      <Link to="/blogs" style={padding}>
-        blogs
-      </Link>
-      <Link to="/users" style={padding}>
-        users
-      </Link>
-      </div>
-    </div>
+        </Button>
+      </Navbar.Text>
+    </Navbar.Collapse>
+  </Container>
+</Navbar>
   )
 }
 

@@ -1,11 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { ListGroup } from 'react-bootstrap'
 
 const User = ({ user }) => {
   return (
   <div>
-    <Link to={`/users/${user.id}`}>{user.name}</Link> has {user.blogs.length} blogs
+    <ListGroup>
+    <ListGroup.Item><Link to={`/users/${user.id}`}>{user.name}</Link> has {user.blogs.length} blogs </ListGroup.Item>
+    </ListGroup>
   </div>
   )
 }

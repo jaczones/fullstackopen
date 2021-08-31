@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { login } from '../reducers/loginReducer'
 import { initializeBlogs } from '../reducers/blogReducer'
 import { useHistory } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 
 const LoginForm = () => {
@@ -42,7 +43,7 @@ const LoginForm = () => {
             name='password'
           />
         </div>
-        <button id='login-button' type="submit">login</button>
+        <Button id='login-button' type="submit">login</Button>
       </form>
     </div>
   )

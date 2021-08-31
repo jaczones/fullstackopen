@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { like, deleteBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { Link } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
 
 const Blog = (props) => {
   const dispatch = useDispatch()
@@ -40,12 +41,12 @@ const Blog = (props) => {
   return (
     <div id="blog" style={blogStyle} className='blog'>
       <p><Link to={`/blogs/${blog.id}`}>{blog.title} - {blog.author}</Link>{' '}
-        <button id='view-button'
-          onClick={toggleVis}>{label}</button> <br/></p>
+        <Button variant="info" id='view-button'
+          onClick={toggleVis}>{label}</Button> <br/></p>
       {showAll ? (
         <div style={showWhenVisible}>
-          <p>URL: {blog.url} <br/> Likes: {blog.likes} <button id='likes-button' onClick={addLikes}>like</button></p>
-          <button id='remove' onClick={removeBlog}>delete</button>
+          <p>URL: {blog.url} <br/> Likes: {blog.likes} <Button id='likes-button' onClick={addLikes}>like</Button></p>
+          <Button id='remove' onClick={removeBlog}>delete</Button>
         </div>
       ) : (
         ''

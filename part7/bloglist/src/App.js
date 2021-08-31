@@ -12,6 +12,7 @@ import { initializeBlogs, like, comment } from './reducers/blogReducer'
 import { initializeAllUsers } from './reducers/userReducer'
 import { Switch, Route, useRouteMatch } from 'react-router-dom'
 import UserList from './components/UserList'
+import { Button, ListGroup } from 'react-bootstrap'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -54,15 +55,17 @@ const App = () => {
           ) : (
             <div>
               <Menu />
-              <h2>Blogs</h2>
+              <h4>Blogs</h4>
               <Notification />
-                <h2>{user.name}</h2>
+                <h4>{user.name}</h4>
                 <h3>Added blogs</h3>
                 {!foundUser ? (
                   null
                 ) : (
                   <div>
-                    {foundUser.blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}
+                    <ListGroup>
+                    <ListGroup.Item>{foundUser.blogs.map((blog) => <Blog key={blog.id} blog={blog} />)}</ListGroup.Item>
+                    </ListGroup>
                   </div>
                 )}
             </div>
@@ -77,27 +80,27 @@ const App = () => {
           ) : (
             <div>
               <Menu />
-              <h2>Blogs</h2>
+              <h4>Blogs</h4>
               <Notification />
                 {!foundBlog ? (
                   null
                 ) : (
                   <div>
-                    <h2>{foundBlog.title}</h2>
+                    <h4>{foundBlog.title}</h4>
                     <p>{foundBlog.url}</p>
                     <p>
                       {foundBlog.likes}{' '}
-                      <button onClick={() => like(foundBlog)}>
+                      <Button onClick={() => like(foundBlog)}>
                         like
-                      </button>
+                      </Button>
                     </p>
                     <p>added by {foundBlog.author}</p>
                       <form onSubmit={handleComment}>
                         <div>
                           <input id="comment" type="text" name="comment" />
-                            <button id="comment-button" type="submit">
+                            <Button id="comment-button" type="submit">
                             add comment
-                          </button>
+                          </Button>
                         </div>
                       </form>
                       <h3> comments </h3>
@@ -118,15 +121,17 @@ const App = () => {
           ) : (
             <div>
               <Menu />
-              <h2>Blogs</h2>
+              <h4>Blogs</h4>
               <Notification />
                 <Togglable buttonLabel="Add new blog" ref={blogFormRef}>
                   <div>
                   <BlogForm />
                   </div>
                 </Togglable>
-                <BlogList />
-                <h2>Users</h2>
+                <ListGroup>
+                <ListGroup.Item><BlogList /></ListGroup.Item>
+                </ListGroup>
+                <h4>Users</h4>
                 <UserList />
             </div>
           )}
@@ -140,9 +145,8 @@ const App = () => {
         ) : (
           <div>
             <Menu />
-            <h2>Blogs</h2>
             <Notification />
-              <h2>Users</h2>
+              <h4>Users</h4>
               <UserList />
           </div>
         )}
