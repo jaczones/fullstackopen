@@ -100,6 +100,10 @@ const App = () => {
                           </button>
                         </div>
                       </form>
+                      <h3> comments </h3>
+                        <ul>
+                          {foundBlog.comments.map((comment) => <li key={comment} >{comment}</li>)}
+                      </ul>
                   </div>
                 )}
             </div>
