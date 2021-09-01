@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery  } from '@apollo/client'
 import { ALL_AUTHORS } from '../queries'
+import BornForm from './BornForm'
 
 const Authors = ({show}) => {
   const authors = useQuery(ALL_AUTHORS)
@@ -15,16 +16,16 @@ const Authors = ({show}) => {
 
   return (
     <div>
-      <h2>authors</h2>
+      <h2>Authors</h2>
       <table>
         <tbody>
           <tr>
             <th></th>
             <th>
-              born
+              Born
             </th>
             <th>
-              books
+              Books
             </th>
           </tr>
           {authors.data.allAuthors.map(a =>
@@ -36,7 +37,7 @@ const Authors = ({show}) => {
           )}
         </tbody>
       </table>
-
+      <BornForm  allAuthors={authors.data.allAuthors}/>
     </div>
   )
 }
