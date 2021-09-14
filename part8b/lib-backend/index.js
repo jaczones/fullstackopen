@@ -1,5 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
-
+require('dotenv').config()
 const { v1: uuid } = require('uuid')
 
 let authors = [
