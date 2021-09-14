@@ -6,23 +6,19 @@ const url = process.env.MONGODB_URI
 
 mongoose.connect(url)
 
-const bookSchema = new mongoose.Schema({
-  title: String,
-  published: Number,
-  author: String,
-  genres: [String]
+const userSchema = new mongoose.Schema({
+  username: String,
+  favoriteGenre: String
 })
 
-const Book = mongoose.model('Book', bookSchema)
+const User = mongoose.model('User', userSchema)
 
-const book = new Book({
-    title: 'The Demon ',
-    published: 1872,
-    author: 'Fyodor Dostoevsky',
-    genres: ['classic', 'revolution']
+const user = new User({
+    username: 'Zachariah',
+    favoriteGenre: 'Sports'
 })
 
-book.save().then(result => {
-  console.log('book saved!')
+user.save().then(result => {
+  console.log('user saved!')
   mongoose.connection.close()
 })

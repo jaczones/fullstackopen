@@ -3,9 +3,11 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const Book = require('./models/book')
 const Author = require('./models/author')
+const User = require('./models/users')
 require('dotenv').config()
 
-
+const JWT_SECRET = process.env.SECRET
+const PASSWORD = process.env.PASSWORD
 const MONGODB_URI = process.env.MONGODB_URI
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -95,7 +97,10 @@ const resolvers = {
       return Book.find({}).populate('author')
 
     },
-    allAuthors: async () => await Author.find({})
+    allAuthors: async () => await Author.find({}),
+    me: (root, args, context) => {
+      return context.currentUser
+    }
   },
 
   Author: {    
@@ -170,12 +175,46 @@ const resolvers = {
       await Author.updateOne(filter, updateDoc, options)
       return await Author.findOne({ name: args.name })
     },
+    createUser: (root, args) => {
+      const user = new User({ username: args.username,  favoriteGenre: args.favoriteGenre})
+  
+      return user.save()
+        .catch(error => {
+          throw new UserInputError(error.message, {
+            invalidArgs: args,
+          })
+        })
+    },
+    login: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+  
+      if ( !user || args.password !== PASSWORD ) {
+        throw new UserInputError("wrong credentials")
+      }
+  
+      const userForToken = {
+        username: user.username,
+        id: user._id,
+      }
+  
+      return { value: jwt.sign(userForToken, JWT_SECRET) }
+    },
   }
 }
 
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  context: async ({ req }) => {    
+    const auth = req ? req.headers.authorization : null    
+    if (auth && auth.toLowerCase().startsWith('bearer ')) {      
+      const decodedToken = jwt.verify(        
+        auth.substring(7), JWT_SECRET      
+        )      
+        const currentUser = await User.findById(decodedToken.id)   
+        return { currentUser }    
+      }  
+    }
 })
 
 server.listen().then(({ url }) => {
