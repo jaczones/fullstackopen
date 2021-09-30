@@ -2,7 +2,7 @@
 
 type Result = string;
 
-const bmiCalculator = (height: number, mass: number) : Result => {
+const calculateBmi = (height: number, mass: number) : Result => {
   let m = height/100;
   let h = m * m;
   let bmi = mass/h;
@@ -18,4 +18,4 @@ const bmiCalculator = (height: number, mass: number) : Result => {
   } return "Obese"
 }
 
-console.log(bmiCalculator(180, 74));
+console.log(calculateBmi(180, 74));
