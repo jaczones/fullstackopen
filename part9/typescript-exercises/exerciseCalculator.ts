@@ -13,7 +13,7 @@ interface CalcValues {
   array: Array<number>
 }
 
-const parseArguments = (args: Array<string>): CalcValues => {
+export const parseArguments = (args: Array<string>): CalcValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.slice(2).some(entry => Number(entry) > 24)) {
     throw new Error('There are only 24 hours in a day, adjust you entries.');
@@ -27,7 +27,7 @@ const parseArguments = (args: Array<string>): CalcValues => {
   }
 };
 
-const calculateExercises = (target: number, hours: Array<number>): Exercise => {
+export const calculateExercises = (target: number, hours: Array<number>): Exercise => {
   const periodLength = hours.length;
   const trainingDays = hours.filter((hour) => hour > 0).length;
   const average = hours.reduce((a, b) => a + b) / periodLength;
