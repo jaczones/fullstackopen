@@ -19,13 +19,13 @@ const parseArguments = (args: Array<string>): CalcValues => {
     throw new Error('There are only 24 hours in a day, adjust you entries.');
   }
   if (args.slice(2).every(entry => !isNaN(Number(entry)))) {
-    const value = Number(args[2])
-    const array = args.slice(3).map(a => Number(a))
-    return { value, array }
+    const value = Number(args[2]);
+    const array = args.slice(3).map(a => Number(a));
+    return { value, array };
   } else {
-    throw new Error('Provided values were not all numbers!')
+    throw new Error('Provided values were not all numbers!');
   }
-}
+};
 
 const calculateExercises = (target: number, hours: Array<number>): Exercise => {
   const periodLength = hours.length;
@@ -42,12 +42,13 @@ const calculateExercises = (target: number, hours: Array<number>): Exercise => {
     ratingDescription: ratingDescription,
     target: target,
     average: average,
-  }
-}
+  };
+};
 
 try {
-  const { value, array } = parseArguments(process.argv)
-  console.log(calculateExercises(value, array))
+  const { value, array } = parseArguments(process.argv);
+  console.log(calculateExercises(value, array));
 } catch (e) {
-  console.log(e.message)
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+  console.log(e.message);
 }
