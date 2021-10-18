@@ -3,6 +3,7 @@
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
 import { calculateExercises } from './exerciseCalculator';
+//import { calculateExercises } from './exerciseCalculator';
 const app = express();
 app.use(express.json());
 
@@ -24,18 +25,23 @@ app.get('/bmi', (_req, res) => {
   });
 }});
 
-app.post('/exercises',(_req, res) => {
-  if (!isNaN(Number(_req.body.target)) && !isNaN(Number(Array(_req.body.daily_exercises))) && Array(_req.body.daily_exercises)) {
-    res.send(calculateExercises(Number(_req.body.target) , Array(_req.body.daily_exercises)));
-  } else if (isNaN(Number(_req.body.target)) || isNaN(Number(Array(_req.body.daily_exercises)))) {
+app.post('/exercises',(req, res) => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const { target, hours }: any = req.body;
+
+  if (!target || !hours){
     res.send({
-      'error': "malformatted parameters"
-    });
-  } else {
-    res.send({
-      'error': "parameters missing"
+      'error': "Missing parameters"
     });
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  if (isNaN(req.body.target) || hours.find((entry: number) => isNaN((entry)))) {
+    res.send({
+      'error': "Malformed parameters"
+    });
+  }
+  res.send(calculateExercises(target, hours));
 });
 
 const PORT = 3003;

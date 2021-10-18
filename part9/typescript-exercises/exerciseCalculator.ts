@@ -16,7 +16,7 @@ interface CalcValues {
 export const parseArguments = (args: Array<string>): CalcValues => {
   if (args.length < 4) throw new Error('Not enough arguments');
   if (args.slice(2).some(entry => Number(entry) > 24)) {
-    throw new Error('There are only 24 hours in a day, adjust you entries.');
+    throw new Error('There are only 24 hours in a day, adjust your entries.');
   }
   if (args.slice(2).every(entry => !isNaN(Number(entry)))) {
     const value = Number(args[2]);
@@ -50,5 +50,5 @@ try {
   console.log(calculateExercises(value, array));
 } catch (e) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  console.log(e.message);
+  //console.log(e.message);
 }
